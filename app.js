@@ -3,10 +3,10 @@ const app = express();
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-// 数据库文件路径
-const dbPath = path.resolve('C:\\Users\\CGI artifacts\\DataBase\\rice_price_database.db');
+// Database file path
+const dbPath = path.resolve(__dirname, 'rice_price_database.db'); // Fixed database path resolution
 
-// 连接SQLite数据库
+// Connect to SQLite database
 const db = new sqlite3.Database(dbPath, (err) => {
    if (err) {
       console.error('Failed to connect to the database:', err.message);
@@ -17,18 +17,18 @@ const db = new sqlite3.Database(dbPath, (err) => {
 
 module.exports = app;
 
-// 解析JSON文件
+// Parse JSON files
 app.use(express.json());
-// 解析网页表单数据，例如name=Alice&age=25
+// Parse form data, e.g., name=Alice&age=25
 app.use(express.urlencoded({ extended: false }));
 
-// 处理根路径请求，返回HTML表单
+// Handle root path request, return HTML form
 app.get('/', function (req, res) {
-   console.log('Serving rice Test.html');
+   console.log('Serving riceTest.html');
    res.sendFile(path.join(__dirname, 'riceTest.html'));
 });
 
-// 处理查询请求
+// Handle query request
 app.post('/query', function (req, res) {
    const { year, month, type } = req.body;
 
@@ -56,7 +56,7 @@ app.post('/query', function (req, res) {
       }
       console.log('Query result:', row);
 
-      // 直接返回 HTML 表格
+      // Return HTML table directly
       const resultHtml = `
          <table border="1">
             <tr>
@@ -77,8 +77,8 @@ app.post('/query', function (req, res) {
    });
 });
 
-// 启动服务器并监听端口4000
-const PORT = 3000;
+// Start the server and listen on port 4000
+const PORT = 4000;
 app.listen(PORT, () => {
    console.log(`Server is running on port ${PORT}.`);
 });
