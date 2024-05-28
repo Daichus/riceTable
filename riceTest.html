@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>歷年米價表</title>
+    <title>Rice Price Query</title>
 </head>
 <body>
-<h1>米價查詢</h1>
+<h1>Query Rice Price</h1>
 <form id="ricePriceForm">
-    <label for="year">年分:</label>
+    <label for="year">Year:</label>
     <select id="year" name="year" required>
         <option value="2020">2020</option>
         <option value="2021">2021</option>
@@ -17,21 +17,21 @@
         <option value="2024">2024</option>
     </select><br><br>
 
-    <label for="month">月份:</label>
+    <label for="month">Month:</label>
     <select id="month" name="month">
-        <option value="">年均</option>
-        <option value="1">1月</option>
-        <option value="2">2月</option>
-        <option value="3">3月</option>
-        <option value="4">4月</option>
-        <option value="5">5月</option>
-        <option value="6">6月</option>
-        <option value="7">7月</option>
-        <option value="8">8月</option>
-        <option value="9">9月</option>
-        <option value="10">10月</option>
-        <option value="11">11月</option>
-        <option value="12">12月</option>
+        <option value="">Yearly Average</option>
+        <option value="1月">1月</option>
+        <option value="2月">2月</option>
+        <option value="3月">3月</option>
+        <option value="4月">4月</option>
+        <option value="5月">5月</option>
+        <option value="6月">6月</option>
+        <option value="7月">7月</option>
+        <option value="8月">8月</option>
+        <option value="9月">9月</option>
+        <option value="10月">10月</option>
+        <option value="11月">11月</option>
+        <option value="12月">12月</option>
     </select><br><br>
 
     <label for="type">Rice Type:</label>
@@ -47,7 +47,7 @@
 <div id="result"></div>
 
 <script>
-    document.getElementById('ricePriceForm').addEventListener('submit', function(event) {
+    document.getElementById('ricePriceForm').addEventListener('submit', async function(event) {
         event.preventDefault();
 
         const year = document.getElementById('year').value;
@@ -56,21 +56,25 @@
 
         const data = { year, month, type };
 
-        fetch('/query', { // Changed URL to a relative path
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('result').innerHTML = html;
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('Error fetching data: ' + error.message);
+        try {
+            const response = await fetch('http://localhost:4000/query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+
+            const html = await response.text();
+            document.getElementById('result').innerHTML = html;
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error fetching data: ' + error.message);
+        }
     });
 </script>
 </body>

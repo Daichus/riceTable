@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const  cookieParser = require('cookie-parser');
+const logger = require('morgan');
+// 数据库文件路径
+const dbPath = path.resolve('rice_price_database.db');
 
-// Database file path
-const dbPath = path.resolve(__dirname, 'rice_price_database.db'); // Fixed database path resolution
-
-// Connect to SQLite database
+// 连接SQLite数据库
 const db = new sqlite3.Database(dbPath, (err) => {
    if (err) {
       console.error('Failed to connect to the database:', err.message);
@@ -17,18 +18,18 @@ const db = new sqlite3.Database(dbPath, (err) => {
 
 module.exports = app;
 
-// Parse JSON files
+// 解析JSON文件
 app.use(express.json());
-// Parse form data, e.g., name=Alice&age=25
+// 解析网页表单数据，例如name=Alice&age=25
 app.use(express.urlencoded({ extended: false }));
-
-// Handle root path request, return HTML form
+app.use(cookieParser());
+// 处理根路径请求，返回HTML表单
 app.get('/', function (req, res) {
-   console.log('Serving riceTest.html');
+   console.log('Serving rice Test.html');
    res.sendFile(path.join(__dirname, 'riceTest.html'));
 });
 
-// Handle query request
+// 处理查询请求
 app.post('/query', function (req, res) {
    const { year, month, type } = req.body;
 
@@ -56,7 +57,7 @@ app.post('/query', function (req, res) {
       }
       console.log('Query result:', row);
 
-      // Return HTML table directly
+      // 直接返回 HTML 表格
       const resultHtml = `
          <table border="1">
             <tr>
@@ -77,7 +78,7 @@ app.post('/query', function (req, res) {
    });
 });
 
-// Start the server and listen on port 4000
+// 启动服务器并监听端口4000
 const PORT = 4000;
 app.listen(PORT, () => {
    console.log(`Server is running on port ${PORT}.`);
