@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="riceCss.css" rel="stylesheet">
-    <title>米價查詢</title>
+    <title>米價查詢網</title>
 </head>
 
 <body>
 <div class="main">
-    <div class="mainTitle">
-        <h1 style="margin-left: 20px">米價查詢網</h1>
-    </div>
-    <div class="links">
-        <div id="allLinks">
-            <a href="#">首頁</a>
-            <a href="#">市場趨勢</a>
-            <a href="#">關於我們</a>
+    <div class="heading">
+            <div class="mainTitle">
+                <h1 style="margin-left: 20px">吃米不能不知米價</h1>
+            </div>
+            <div class="links">
+                <div id="allLinks">
+
+                </div>
+            </div>
         </div>
-    </div>
     <div class="intro">
         <div class="introMain">
-            <div class="introText"  >
-                <h1>您關心米價嗎?</h1>
-                <h2>受到氣候衝擊以及國際影響，全球米價八月創下新高，而我們台灣稻米產量可以自給自足，價格受國際波
+            <div class="introText">
+                <h1 style="margin-left: 7px">您關心米價嗎?</h1>
+                <h2 style="margin-left: 7px">受到氣候衝擊以及國際影響，全球米價八月創下新高，而我們台灣稻米產量可以自給自足，價格受國際波
                     動比較小，不過，因應氣候變遷，極端氣候都可能推升農民的成本，必須要提早做好
                     因應對策，為此我們為您提供過去五年每月份的米價供參考。</h2>
             </div>
@@ -36,8 +36,8 @@
 
 
 
-    <header>
-        <h1>米價查詢</h1>
+    <header id="tableHeader" style="margin-top: 35px">
+        <h1 style="display: flex;justify-content: center">米價查詢</h1>
     </header>
     <div class="table">
         <form id="ricePriceForm" action="/" method="post">
@@ -72,19 +72,18 @@
                 <option value="硬秈">硬秈</option>
                 <option value="軟秈">軟秈</option>
             </select><br><br>
-
             <button type="submit">查詢</button>
         </form>
 
 
         <div id="searchResult">
-            <table id="riceTable">
+            <table id="riceTable" style="width: 720px;font-size: 20px">
                 <thead>
-                <tr>
+                <tr style="background: #808000FF;color:white">
                     <th>年份</th>
                     <th>月份</th>
                     <th>米種</th>
-                    <th>價格</th>
+                    <th>價格(元/斤)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -92,6 +91,10 @@
             </table>
         </div>
     </div>
+    <div class="footer">
+
+    </div>
 </div>
+
 </body>
 </html>

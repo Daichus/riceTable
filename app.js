@@ -6,6 +6,7 @@ const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 //(optional)導入處理資料路徑的工具包
 const path = require('path');
+
 //(optional)導入處理瀏覽器cookie的工具包
 const  cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -25,6 +26,8 @@ app.use(express.json());
 // 使用解析网页表单数据，例如name=Alice&age=25
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'public')));
 //將app變數導出
 module.exports = app;
 
@@ -67,7 +70,7 @@ app.post('/', (req, res) => {
 
             // 插入查询结果到表格中
             const resultTable = `
-        <tr>
+        <tr style="background: #C1E1C1;font-weight: bold;text-align: center">
           <td>${row.year}</td>
           <td>${row.month || '年平均'}</td>
           <td>${row.type}</td>
