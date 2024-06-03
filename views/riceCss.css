@@ -1,0 +1,67 @@
+html{
+    width: 100vw;
+    height: 100vh;
+}
+.main{
+    width: 100%;
+    height: 100%;
+    color: midnightblue;
+    font-family: "標楷體", monospace;
+    display: flex;
+    flex-direction: column;
+    background: url("/public/images/background.png") no-repeat fixed;
+    background-size: cover;
+}
+
+.mainTitle{
+    width: 100%;
+    padding: 1px;
+    font-size: 20px;
+    color: white;
+    background: #556B2F;
+}
+.links{
+    padding: 5px;
+    display: flex;
+    justify-content: right;
+
+}
+#allLinks{
+    display: flex;
+    width: 600px;
+    justify-content: space-evenly;
+}
+.links a{
+    color: black;
+    font-weight: bold;
+    padding: 4px ;
+    text-decoration: none;
+    font-size: 24px;
+}
+.intro{
+    width: 100%;
+    height: 480px;
+    margin-top: 35px;
+    display: flex;
+    justify-content: center;
+
+    background-size: cover;
+
+}
+.intro .introMain{
+    width: 50%;
+    display: flex;
+
+}
+.introText{
+    color: white;
+    width: 50%;
+    background: rgb(128,128,0);
+    line-height: 45px;
+
+}
+.Slider{
+    background: url("/public/images/rice-1.png") ;
+    width: 50%;
+
+}

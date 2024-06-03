@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="riceCss.css" rel="stylesheet">
+    <title>米價查詢</title>
+</head>
+
+<body>
+<div class="main">
+    <div class="mainTitle">
+        <h1 style="margin-left: 20px">米價查詢網</h1>
+    </div>
+    <div class="links">
+        <div id="allLinks">
+            <a href="#">首頁</a>
+            <a href="#">市場趨勢</a>
+            <a href="#">關於我們</a>
+        </div>
+    </div>
+    <div class="intro">
+        <div class="introMain">
+            <div class="introText"  >
+                <h1>您關心米價嗎?</h1>
+                <h2>受到氣候衝擊以及國際影響，全球米價八月創下新高，而我們台灣稻米產量可以自給自足，價格受國際波
+                    動比較小，不過，因應氣候變遷，極端氣候都可能推升農民的成本，必須要提早做好
+                    因應對策，為此我們為您提供過去五年每月份的米價供參考。</h2>
+            </div>
+            <div class="Slider">
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <header>
+        <h1>米價查詢</h1>
+    </header>
+    <div class="table">
+        <form id="ricePriceForm" action="/" method="post">
+            <label for="year">年份:</label>
+            <select id="year" name="year" required>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+            </select><br><br>
+
+            <label for="month">月份:</label>
+            <select id="month" name="month" required>
+                <option value="1月">1月</option>
+                <option value="2月">2月</option>
+                <option value="3月">3月</option>
+                <option value="4月">4月</option>
+                <option value="5月">5月</option>
+                <option value="6月">6月</option>
+                <option value="7月">7月</option>
+                <option value="8月">8月</option>
+                <option value="9月">9月</option>
+                <option value="10月">10月</option>
+                <option value="11月">11月</option>
+                <option value="12月">12月</option>
+            </select><br><br>
+
+            <label for="type">米種:</label>
+            <select id="type" name="type" required>
+                <option value="蓬萵米">蓬萵米</option>
+                <option value="硬秈">硬秈</option>
+                <option value="軟秈">軟秈</option>
+            </select><br><br>
+
+            <button type="submit">查詢</button>
+        </form>
+
+
+        <div id="searchResult">
+            <table id="riceTable">
+                <thead>
+                <tr>
+                    <th>年份</th>
+                    <th>月份</th>
+                    <th>米種</th>
+                    <th>價格</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

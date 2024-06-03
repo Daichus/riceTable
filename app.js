@@ -1,83 +1,88 @@
 const express = require('express');
+//創建一個用於管理路由，請求何回應的express實例(等同於創建伺服器架構)
 const app = express();
+//導入處理database的工具包
 const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
+//(optional)導入處理資料路徑的工具包
 const path = require('path');
+//(optional)導入處理瀏覽器cookie的工具包
 const  cookieParser = require('cookie-parser');
 const logger = require('morgan');
 // 数据库文件路径
 const dbPath = path.resolve('rice_price_database.db');
-
-// 连接SQLite数据库
-const db = new sqlite3.Database(dbPath, (err) => {
-   if (err) {
-      console.error('Failed to connect to the database:', err.message);
+const htmlPath = path.resolve(__dirname,'views','riceTest.html');
+// 连接SQLite数据库，(error) =>等同於java中的try catch中的catch
+const db = new sqlite3.Database(dbPath, (error) => {
+   if (error) {
+      console.error('Failed to connect to the database:', error.message);
    } else {
-      console.log('Connected to the SQLite database.');
+      console.log('Connected to the  Database.');
    }
 });
-
-module.exports = app;
-
-// 解析JSON文件
+// 使用解析JSON文件的工具
 app.use(express.json());
-// 解析网页表单数据，例如name=Alice&age=25
+// 使用解析网页表单数据，例如name=Alice&age=25
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// 处理根路径请求，返回HTML表单
-app.get('/', function (req, res) {
-   console.log('Serving rice Test.html');
-   res.sendFile(path.join(__dirname, 'riceTest.html'));
+//將app變數導出
+module.exports = app;
+
+
+// 創建一個具備req與res功能的方法以處理根路径请求，返回HTML表单
+app.get('/', (req, res)=> {
+   console.log('Success.');
+   res.sendFile(htmlPath);
 });
 
-// 处理查询请求
-app.post('/query', function (req, res) {
+app.post('/', (req, res) => {
    const { year, month, type } = req.body;
 
-   console.log('Received query request:', req.body);
+   console.log('Received query request:', req.body); // 打印接收到的请求数据
 
-   if (!year || !type) {
-      console.log('Missing required fields');
-      return res.status(400).send('Missing required fields: year, type');
+   if (!year || !month || !type) {
+      return res.status(400).json({ error: 'Missing required fields: year, month, type' });
    }
 
-   const query = month
-       ? 'SELECT * FROM rice_prices WHERE year = ? AND month = ? AND type = ?'
-       : 'SELECT * FROM rice_prices WHERE year = ? AND month IS NULL AND type = ?';
+   // 定义查询语句
+   const query = 'SELECT * FROM rice_prices WHERE year = ? AND month = ? AND type = ?';
+   const params = [year, month, type];
 
-   console.log('Executing query:', query, [year, month, type]);
-
-   db.get(query, [year, month, type], (err, row) => {
+   db.get(query, params, (err, row) => {
       if (err) {
-         console.error('Failed to retrieve data from the database:', err.message);
-         return res.status(500).send('Failed to retrieve data from the database');
+         console.error('Failed to retrieve data from the database:', err.message); // 打印错误信息
+         return res.status(500).json({ error: 'Failed to retrieve data from the database' });
       }
       if (!row) {
-         console.log('No data found for the provided inputs');
-         return res.status(404).send('No data found for the provided inputs');
+         console.log('No data found for the provided inputs'); // 打印未找到数据的信息
+         return res.status(404).json({ error: 'No data found for the provided inputs' });
       }
-      console.log('Query result:', row);
 
-      // 直接返回 HTML 表格
-      const resultHtml = `
-         <table border="1">
-            <tr>
-               <th>Year</th>
-               <th>Month</th>
-               <th>Type</th>
-               <th>Price</th>
-            </tr>
-            <tr>
-               <td>${row.year}</td>
-               <td>${row.month || 'Yearly Average'}</td>
-               <td>${row.type}</td>
-               <td>${row.price}</td>
-            </tr>
-         </table>
+      // 读取现有的 HTML 文件
+      fs.readFile(htmlPath, 'utf8', (err, htmlData) => {
+         if (err) {
+            console.error('Failed to read HTML file:', err.message);
+            return res.status(500).send('Failed to read HTML file');
+         }
+
+            // 插入查询结果到表格中
+            const resultTable = `
+        <tr>
+          <td>${row.year}</td>
+          <td>${row.month || '年平均'}</td>
+          <td>${row.type}</td>
+          <td>${row.price}</td>
+        </tr>
       `;
-      res.send(resultHtml);
-   });
-});
 
+            // 查找表格的起始位置并插入结果
+            const updatedHtml = htmlData.replace('</tbody>', resultTable + '</tbody>');
+
+            // 返回更新后的 HTML 文件
+            res.send(updatedHtml);
+         });
+      });
+});
 // 启动服务器并监听端口4000
 const PORT = 4000;
 app.listen(PORT, () => {
